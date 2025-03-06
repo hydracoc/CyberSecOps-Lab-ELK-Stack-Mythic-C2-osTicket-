@@ -295,52 +295,72 @@ Below is an image of successful deployment and execution of my attack payload to
 
 
 ## Investigations
-In a Security Operations Center (SOC), investigations are a critical aspect of incident response. When an alert is triggered, SOC analysts must quickly assess the situation, determine the threat level, and decide on the appropriate course of action. This section outlines investigation strategies, key questions to ask, and best practices for handling incidents using a Security Information and Event Management (SIEM) system.
-### Investigation Process
-### Alert Triage:
-* **Review the alert details** (source, event codes, timestamps).
-* **Cross-check with threat intelligence sources** (e.g., GreyNoise, AbuseIPDB) to see if the IP is flagged as malicious.
-### Context Building:
-·	Gather related logs to build a timeline.
-·	Check for other events tied to the same IP, user, or host.
-#### Key Questions to Ask:
-### SSH Brute Force Alert:
-* **Is the IP recognized for brute force or other malicious activity?**
-* **Are there multiple failed login attempts within a short time?**
-* **Were any logins successful? If so, what actions followed the login?**
-Example:
-·	IP: 218.92.0.155
-·	Malicious? YES (GreyNoise: Malicious, AbuseIPDB: 100% Confidence)
-·	Affected Users? Only root
-·	Successful Logins? NO
-RDP Brute Force Alert:
-·	Is the IP known for brute force attacks?
-·	Are multiple user accounts targeted?
-·	If successful, what processes or connections were made post-login?
-Example:
-·	IP: 111.92.61.249
-·	Malicious? YES (GreyNoise: Suspicious, AbuseIPDB: Not Listed)
-·	Affected Users? Administrator, admin
-·	Successful Logins? NO
-Writing an Investigation Report
-Summary:
-·	A brief description of the incident and timeline.
-Findings:
-·	Key observations from the logs and threat intel sources.
-Impact:
-·	Which systems or users were affected?
-·	Was any data exfiltrated or modified?
-Recommendations:
-·	Immediate actions (e.g., block IP, disable compromised accounts).
-·	Long-term improvements (e.g., stronger password policies, improved logging).
-Escalation & Post-Investigation
-Escalate to SOC Managers:
-·	If a threat is active or critical systems are affected.
-Documentation & Lessons Learned:
-·	Update playbooks based on the incident.
-·	Refine alerting rules to catch similar attacks earlier.
 
-Below are images of alerts I recievied throughout multiple days of testing and other outsider attempts to attack my SSH and RDP sessions.
+In a Security Operations Center (SOC), investigations are a critical aspect of incident response. When an alert is triggered, SOC analysts must quickly assess the situation, determine the threat level, and decide on the appropriate course of action. This section outlines investigation strategies, key questions to ask, and best practices for handling incidents using a Security Information and Event Management (SIEM) system.
+
+### Investigation Process
+
+#### Alert Triage:
+- **Review the alert details** (source, event codes, timestamps).
+- **Cross-check with threat intelligence sources** (e.g., GreyNoise, AbuseIPDB) to see if the IP is flagged as malicious.
+
+#### Context Building:
+- Gather related logs to build a timeline.
+- Check for other events tied to the same IP, user, or host.
+
+### Key Questions to Ask:
+
+#### SSH Brute Force Alert:
+- **Is the IP recognized for brute force or other malicious activity?**
+- **Are there multiple failed login attempts within a short time?**
+- **Were any logins successful? If so, what actions followed the login?**
+
+**Example:**
+- **IP:** 218.92.0.155  
+- **Malicious?** YES *(GreyNoise: Malicious, AbuseIPDB: 100% Confidence)*  
+- **Affected Users?** Only root  
+- **Successful Logins?** NO  
+
+#### RDP Brute Force Alert:
+- **Is the IP known for brute force attacks?**
+- **Are multiple user accounts targeted?**
+- **If successful, what processes or connections were made post-login?**
+
+**Example:**
+- **IP:** 111.92.61.249  
+- **Malicious?** YES *(GreyNoise: Suspicious, AbuseIPDB: Not Listed)*  
+- **Affected Users?** Administrator, admin  
+- **Successful Logins?** NO  
+
+### Writing an Investigation Report
+
+#### Summary:
+- A brief description of the incident and timeline.
+
+#### Findings:
+- Key observations from the logs and threat intel sources.
+
+#### Impact:
+- Which systems or users were affected?
+- Was any data exfiltrated or modified?
+
+#### Recommendations:
+- Immediate actions *(e.g., block IP, disable compromised accounts).*
+- Long-term improvements *(e.g., stronger password policies, improved logging).*
+
+### Escalation & Post-Investigation
+
+#### Escalate to SOC Managers:
+- If a threat is active or critical systems are affected.
+
+#### Documentation & Lessons Learned:
+- Update playbooks based on the incident.
+- Refine alerting rules to catch similar attacks earlier.
+
+---
+
+Below are images of alerts received throughout multiple days of testing and other outsider attempts to attack SSH and RDP sessions.
+
 ![Alerts-Based-On-Rules](https://github.com/user-attachments/assets/67fe8e52-eb57-47c5-96ea-c3b372340938)
 
 ![ELK-Alerts-Based-On-Rules](https://github.com/user-attachments/assets/61a30dd8-eac0-4f81-bcbc-774be98a032a)
