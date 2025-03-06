@@ -124,100 +124,165 @@ Example command to launch Crowbar against the RDP service:
 
 ## Dashboards in Elasticsearch
 Dashboards are a powerful feature in Elasticsearch, providing visual insights into the collected data through charts, tables, and graphs. In a SOC environment, dashboards help analysts quickly spot anomalies, investigate security events, and correlate data from various sources.
-·	Purpose: Dashboards offer a centralized view of security events, showcasing login attempts, suspicious activities, and system health.
-·	Creation: Using Kibana, you can create custom visualizations by querying Elasticsearch data and organizing the visualizations into a dashboard layout.
-Example Queries for Dashboard Creation
+
+* **Purpose:** Dashboards offer a centralized view of security events, showcasing login attempts, suspicious activities, and system health.
+* **Creation:** Using Kibana, you can create custom visualizations by querying Elasticsearch data and organizing the visualizations into a dashboard layout.
+
+### Example Queries for Dashboard Creation
+
 In my project, I built dashboards using specific queries to monitor authentication events and detect suspicious activity:
 
 ![Dashboard-On-SSH-Activities-On-Endpoint](https://github.com/user-attachments/assets/3c97328a-5b79-4931-bf7b-1ae85b0e1bdd)
 
-·	Failed SSH Login Attempts:
-system.auth.ssh.event : * and agent.name: MYDFIR-Linux-collinscurtis and system.auth.ssh.event: Failed
-·	Successful SSH Logins:
-system.auth.ssh.event : * and agent.name: MYDFIR-Linux-collinscurtis and system.auth.ssh.event: Accepted
+* **Failed SSH Login Attempts:**
+
+    ```
+    system.auth.ssh.event : * and agent.name: MYDFIR-Linux-collinscurtis and system.auth.ssh.event: Failed
+    ```
+
+* **Successful SSH Logins:**
+
+    ```
+    system.auth.ssh.event : * and agent.name: MYDFIR-Linux-collinscurtis and system.auth.ssh.event: Accepted
+    ```
 
 ![Dashboard-On-RDP-Activities-On-Endpoint](https://github.com/user-attachments/assets/45bbc6bf-35be-484b-b5b9-85b0ff1babcf)
 
-·	Failed RDP Login Attempts (Windows Event ID 4625):
-event.code : 4625 and agent.name: MYDFIR-WIN-collinscurtis
-·	Successful RDP Logins (Windows Event ID 4624, Logon Types 10 and 7):
-event.code : 4624 and winlog.event_data.LogonType : 10 or winlog.event_data.LogonType : 7
+* **Failed RDP Login Attempts (Windows Event ID 4625):**
+
+    ```
+    event.code : 4625 and agent.name: MYDFIR-WIN-collinscurtis
+    ```
+
+* **Successful RDP Logins (Windows Event ID 4624, Logon Types 10 and 7):**
+
+    ```
+    event.code : 4624 and winlog.event_data.LogonType : 10 or winlog.event_data.LogonType : 7
+    ```
 
 These queries allow you to visualize authentication trends, spot brute force attempts, and identify successful intrusions, giving analysts the context they need to take timely action.
 
+## Command and Control (C2)
 
-
-Command and Control (C2)
 Command and Control (C2) is a technique used by attackers to remotely manage compromised systems within a target network. After gaining initial access, attackers use C2 servers to issue commands, gather data, and maintain persistent access. C2 infrastructure is a critical component of advanced persistent threats (APTs) and red team operations.
-·	How C2 Works:
-·	The compromised machine ("beacon") connects to the C2 server.
-·	The C2 server sends instructions (e.g., run commands, escalate privileges, exfiltrate data).
-·	The beacon executes the commands and returns the results.
+
+* **How C2 Works:**
+    * The compromised machine ("beacon") connects to the C2 server.
+    * The C2 server sends instructions (e.g., run commands, escalate privileges, exfiltrate data).
+    * The beacon executes the commands and returns the results.
+
 In this project, we set up a Mythic C2 server to simulate real-world attack scenarios.
-Installing Mythic on Ubuntu Linux
+
+### Installing Mythic on Ubuntu Linux
+
 Mythic is an open-source C2 framework that provides a modular, flexible, and intuitive platform for red teaming. Here's a simplified installation process:
-Update System Packages:
- sudo apt update && sudo apt upgrade -y
-Install Required Packages:
- sudo apt install docker.io docker-compose -y
-Clone Mythic Repository:
- git clone https://github.com/its-a-feature/Mythic.git
- cd Mythic
-Configure and Start Mythic:
- sudo ./mythic-cli install
- sudo ./mythic-cli start
-Access the Mythic Web Interface:Open a browser and navigate to http://<your-server-ip>:7443 to log in and start managing agents.
+
+1. **Update System Packages:**
+
+    ```bash
+    sudo apt update && sudo apt upgrade -y
+    ```
+
+2. **Install Required Packages:**
+
+    ```bash
+    sudo apt install docker.io docker-compose -y
+    ```
+
+3. **Clone Mythic Repository:**
+
+    ```bash
+    git clone [https://github.com/its-a-feature/Mythic.git](https://github.com/its-a-feature/Mythic.git)
+    cd Mythic
+    ```
+
+4. **Configure and Start Mythic:**
+
+    ```bash
+    sudo ./mythic-cli install
+    sudo ./mythic-cli start
+    ```
+
+5. **Access the Mythic Web Interface:**
+
+    Open a browser and navigate to `http://<your-server-ip>:7443` to log in and start managing agents.
 
 ![Mythic-C2](https://github.com/user-attachments/assets/397c0f4d-82ae-44d5-a3dd-fbe8f87f510a)
 
 The image above is a mythic c2 server which will be our command and control center.
 
+## Alerts in ELK
 
-
-Alerts in ELK
 Alerts are an essential feature in any SOC environment, enabling analysts to detect and respond to suspicious activities in real-time. In Elasticsearch, alerts are triggered by specific rule-based conditions, helping analysts stay on top of potential threats without manually sifting through endless logs.
-·	What Are Alerts?Alerts are automated notifications generated when specific events or patterns are detected in log data. They help SOC analysts rapidly identify threats, investigate incidents, and take immediate action to mitigate attacks.
-·	Why Alerts Are Helpful for SOC Analysts:
-·	Early Threat Detection: Catch suspicious activities like brute force attempts or malware execution as they happen.
-·	Faster Incident Response: Enable analysts to respond quickly, reducing the time attackers have to establish persistence.
-·	Efficient Monitoring: Automate log analysis, freeing up analysts to focus on more complex investigations.
-·	Customizable Rules: Tailor alerts to the environment’s specific security needs and threat landscape.
-·	Creating Alerts in ELK:In Kibana, you can create alerts by defining detection rules. These rules query log data, searching for specific event patterns. When a match is found, an alert is triggered, which can then notify analysts via email, Slack, or other communication channels.
-·	For guidance on setting up alerts, check out these helpful YouTube videos:
-·	How to Create Alerts in ELK - Part 1
-·	How to Create Alerts in ELK - Part 2
-Example Alert Rules
+
+* **What Are Alerts?**
+
+    Alerts are automated notifications generated when specific events or patterns are detected in log data. They help SOC analysts rapidly identify threats, investigate incidents, and take immediate action to mitigate attacks.
+
+* **Why Alerts Are Helpful for SOC Analysts:**
+    * **Early Threat Detection:** Catch suspicious activities like brute force attempts or malware execution as they happen.
+    * **Faster Incident Response:** Enable analysts to respond quickly, reducing the time attackers have to establish persistence.
+    * **Efficient Monitoring:** Automate log analysis, freeing up analysts to focus on more complex investigations.
+    * **Customizable Rules:** Tailor alerts to the environment’s specific security needs and threat landscape.
+
+* **Creating Alerts in ELK:**
+
+    In Kibana, you can create alerts by defining detection rules. These rules query log data, searching for specific event patterns. When a match is found, an alert is triggered, which can then notify analysts via email, Slack, or other communication channels.
+
+* **For guidance on setting up alerts, check out these helpful YouTube videos:**
+    * [How to Create Alerts in ELK - Part 1](https://www.youtube.com/watch?v=tutorial_link_example)
+    * [How to Create Alerts in ELK - Part 2](https://www.youtube.com/watch?v=tutorial_link_example)
+
+### Example Alert Rules
+
 In my project, I implemented several alert rules to catch different types of threats:
-·	SSH Brute Force Attempt:Triggered when multiple failed SSH login attempts to the root user are detected on the Linux server.
-system.auth.ssh.event : * and agent.name : "MYDFIR-Linux-collinscurtis" and system.auth.ssh.event : "Failed" and user.name:"root"
-![SSH-Brute-Force-Alert-Rule](https://github.com/user-attachments/assets/75bdfd77-81d6-4608-89df-4c0e5a3cce35)
 
+* **SSH Brute Force Attempt:**
 
-·	RDP Brute Force Attempt:Detects repeated failed RDP login attempts to the Administrator account on the Windows server.
-event.code : "4625" and agent.name : "MYDFIR-WIN-collinscurtis" and user.name : "Administrator"
-![RDP-Brute-Force-Alert-Rule](https://github.com/user-attachments/assets/fb1d845a-9bd6-4344-ad5e-ef62eeb3b3fa)
+    Triggered when multiple failed SSH login attempts to the root user are detected on the Linux server.
 
+    ```
+    system.auth.ssh.event : * and agent.name : "MYDFIR-Linux-collinscurtis" and system.auth.ssh.event : "Failed" and user.name:"root"
+    ```
 
-·	Mythic C2 Apollo Agent Detected:Flags events indicating the presence of a Mythic Apollo agent on a Windows endpoint, based on file hash and executable name.
-event.code : "1" and (winlog.event_data.Hashes: "F8A9CA51734A8B7ACE33F2961705A162643813C3D569FBB27316483C1EF4E81B" or winlog.event_data.OriginalFileName : "Apollo.exe")
-![Mythic-C2-Agent-Alert-Rule](https://github.com/user-attachments/assets/23876cd0-f9f2-46c6-8c97-e8199796c055)
+    ![SSH-Brute-Force-Alert-Rule](https://github.com/user-attachments/assets/75bdfd77-81d6-4608-89df-4c0e5a3cce35)
 
+* **RDP Brute Force Attempt:**
+
+    Detects repeated failed RDP login attempts to the Administrator account on the Windows server.
+
+    ```
+    event.code : "4625" and agent.name : "MYDFIR-WIN-collinscurtis" and user.name : "Administrator"
+    ```
+
+    ![RDP-Brute-Force-Alert-Rule](https://github.com/user-attachments/assets/fb1d845a-9bd6-4344-ad5e-ef62eeb3b3fa)
+
+* **Mythic C2 Apollo Agent Detected:**
+
+    Flags events indicating the presence of a Mythic Apollo agent on a Windows endpoint, based on file hash and executable name.
+
+    ```
+    event.code : "1" and (winlog.event_data.Hashes: "F8A9CA51734A8B7ACE33F2961705A162643813C3D569FBB27316483C1EF4E81B" or winlog.event_data.OriginalFileName : "Apollo.exe")
+    ```
+
+    ![Mythic-C2-Agent-Alert-Rule](https://github.com/user-attachments/assets/23876cd0-f9f2-46c6-8c97-e8199796c055)
 
 These alert rules empower SOC analysts to detect attacks and suspicious activity, providing the visibility needed to secure the environment effectively.
 
+## Attack Diagram
 
-Attack Diagram
-The attack diagram outlines a multi-phase attack chain, demonstrating different stages of an adversary’s approach to compromising a system. 
+The attack diagram outlines a multi-phase attack chain, demonstrating different stages of an adversary’s approach to compromising a system.
+
 ![Attack-Diagram drawio](https://github.com/user-attachments/assets/d59183ea-e727-4674-b013-64beedd47d75)
 
-
 This structured attack flow helps illustrate how various tactics are detected and logged within the ELK stack for later analysis.
-·	Phase 1: Initial Access — The attacker brute forces RDP credentials to access the Windows server. Upon successful authentication, they establish an initial foothold.
-·	Phase 2: Discovery — After gaining access, the attacker performs reconnaissance commands like whoami, ipconfig, and net user to gather information about the system and its users.
-·	Phase 3: Defense Evasion — The attacker disables security mechanisms (e.g., Windows Defender) to avoid detection.
-·	Phase 4: Execution — The attacker executes payloads via PowerShell to deploy the Mythic C2 agent, establishing persistent command and control.
-·	Phase 5: Command and Control — The C2 agent communicates with the Mythic server, allowing the attacker to issue remote commands and maintain control over the compromised machine.
-·	Phase 6: Exfiltration — The attacker simulates data theft by creating and downloading a fake password file.
+
+* **Phase 1: Initial Access** — The attacker brute forces RDP credentials to access the Windows server. Upon successful authentication, they establish an initial foothold.
+* **Phase 2: Discovery** — After gaining access, the attacker performs reconnaissance commands like `whoami`, `ipconfig`, and `net user` to gather information about the system and its users.
+* **Phase 3: Defense Evasion** — The attacker disables security mechanisms (e.g., Windows Defender) to avoid detection.
+* **Phase 4: Execution** — The attacker executes payloads via PowerShell to deploy the Mythic C2 agent, establishing persistent command and control.
+* **Phase 5: Command and Control** — The C2 agent communicates with the Mythic server, allowing the attacker to issue remote commands and maintain control over the compromised machine.
+* **Phase 6: Exfiltration** — The attacker simulates data theft by creating and downloading a fake password file.
 The purpose of these simulated attacks is not only to test defensive capabilities but also to generate valuable log data for analysis and continuous improvement of the SOC environment. Any type of attack can be simulated, depending on the learning objectives — whether it’s privilege escalation, lateral movement, or data exfiltration, the goal is to create realistic logs and use them to refine detection and response strategies.
 
 
@@ -229,20 +294,20 @@ Below is an image of successful deployment and execution of my attack payload to
 
 
 
-Investigations
+## Investigations
 In a Security Operations Center (SOC), investigations are a critical aspect of incident response. When an alert is triggered, SOC analysts must quickly assess the situation, determine the threat level, and decide on the appropriate course of action. This section outlines investigation strategies, key questions to ask, and best practices for handling incidents using a Security Information and Event Management (SIEM) system.
-Investigation Process
-Alert Triage:
-·	Review the alert details (source, event codes, timestamps).
-·	Cross-check with threat intelligence sources (e.g., GreyNoise, AbuseIPDB) to see if the IP is flagged as malicious.
-Context Building:
+### Investigation Process
+### Alert Triage:
+* **Review the alert details** (source, event codes, timestamps).
+* **Cross-check with threat intelligence sources** (e.g., GreyNoise, AbuseIPDB) to see if the IP is flagged as malicious.
+### Context Building:
 ·	Gather related logs to build a timeline.
 ·	Check for other events tied to the same IP, user, or host.
-Key Questions to Ask:
-SSH Brute Force Alert:
-·	Is the IP recognized for brute force or other malicious activity?
-·	Are there multiple failed login attempts within a short time?
-·	Were any logins successful? If so, what actions followed the login?
+#### Key Questions to Ask:
+### SSH Brute Force Alert:
+* **Is the IP recognized for brute force or other malicious activity?**
+* **Are there multiple failed login attempts within a short time?**
+* **Were any logins successful? If so, what actions followed the login?**
 Example:
 ·	IP: 218.92.0.155
 ·	Malicious? YES (GreyNoise: Malicious, AbuseIPDB: 100% Confidence)
