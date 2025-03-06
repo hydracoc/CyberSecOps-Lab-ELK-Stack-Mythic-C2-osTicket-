@@ -2,6 +2,8 @@
 
 A hands-on cybersecurity project designed to simulate a real-world Security Operations Center (SOC) environment. This lab integrates various open-source tools to detect, investigate, and respond to simulated cyber threats, providing a comprehensive learning experience.
 
+A full walkthrough of this project into detail can be found on Stephen's MYDFIR Youtube Channel [here](https://www.youtube.com/watch?v=GWX19cpv21w&list=PLG6KGSNK4PuBb0OjyDIdACZnb8AoNBeq6) 
+
 ## Cybersecurity Project Documentation
 
 **Project Title:**
@@ -45,9 +47,9 @@ The ELK Stack, composed of Elasticsearch, Logstash, and Kibana, is a powerful su
 
 Rather than listing every installation command, below are some useful resources that provide detailed guidance on setting up the ELK Stack:
 
-* What is ELK Stack? [Watch the video](https://www.youtube.com/watch?v=tutorial_link_example)
-* Elasticsearch Setup Guide: [Watch the video](https://www.youtube.com/watch?v=tutorial_link_example)
-* Kibana Setup Tutorial: [Watch the video](https://www.youtube.com/watch?v=tutorial_link_example)
+* What is ELK Stack? [Watch the video](https://www.youtube.com/watch?v=4AwBhXAW90Q)
+* Elasticsearch Setup Guide: [Watch the video](https://www.youtube.com/watch?v=ypXARA5Uk4I)
+* Kibana Setup Tutorial: [Watch the video](https://www.youtube.com/watch?v=tXwMoBbrkYw)
 
 These resources will walk you through the installation, configuration, and initial setup, allowing you to build and configure your ELK environment step by step.
 
@@ -64,7 +66,7 @@ Elastic Agents can be installed on various systems (Windows, Linux, macOS) to co
 
 For a step-by-step setup guide, check out this useful video resource:
 
-* Elastic Agents & Fleet Server Setup: [Watch the video](https://www.youtube.com/watch?v=tutorial_link_example)
+* Elastic Agents & Fleet Server Setup: [Watch the video](https://www.youtube.com/watch?v=P2SFC6Kwae0)
 
 This video will guide you through installing the Fleet server, enrolling agents, and verifying data ingestion into the ELK stack.
 
@@ -84,7 +86,7 @@ Installing Sysmon involves downloading and configuring it with a ruleset that sp
 
 For a complete setup guide, check out this detailed video walkthrough:
 
-* Sysmon Setup and Integration with Elastic Agent: [Watch the video](https://www.youtube.com/watch?v=tutorial_link_example)
+* Sysmon Setup and Integration with Elastic Agent: [Watch the video](https://www.youtube.com/watch?v=nzZY9OSfkeg)
 
 This video provides step-by-step instructions on installing Sysmon, configuring the rules, and setting up the Elastic Agent to ship logs to your ELK stack.
 
@@ -230,8 +232,8 @@ Alerts are an essential feature in any SOC environment, enabling analysts to det
     In Kibana, you can create alerts by defining detection rules. These rules query log data, searching for specific event patterns. When a match is found, an alert is triggered, which can then notify analysts via email, Slack, or other communication channels.
 
 * **For guidance on setting up alerts, check out these helpful YouTube videos:**
-    * [How to Create Alerts in ELK - Part 1](https://www.youtube.com/watch?v=tutorial_link_example)
-    * [How to Create Alerts in ELK - Part 2](https://www.youtube.com/watch?v=tutorial_link_example)
+    * [How to Create Alerts in ELK - Part 1](https://www.youtube.com/watch?v=11eBIfDeZ7k)
+    * [How to Create Alerts in ELK - Part 2](https://www.youtube.com/watch?v=pAfIi6Z6a2g)
 
 ### Example Alert Rules
 
